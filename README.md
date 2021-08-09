@@ -25,9 +25,13 @@ Preview Features     : selectRelationCount
 2. Import `issue_8050.sql` file. 
 
 This has the following data:
+
 post title one has 2 comments
+
 post title two has 4 comments
+
 post title three has 0 comment
+
 post title four has 0 comment
 
 3. Install deps and run `yarn start` to reproduce. It returns the following data which is wrong:
