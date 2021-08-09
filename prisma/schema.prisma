@@ -1,0 +1,47 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["selectRelationCount"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String?
+  posts     Post[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([name, email])
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  title     String
+  body      String
+  published Boolean
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([title])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
